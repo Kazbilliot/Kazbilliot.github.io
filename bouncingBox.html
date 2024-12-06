@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Bouncing Box</title>
+  <style>
+    div {
+      width: 30px;
+      height: 30px;
+      background-color: red;
+      position: absolute;
+      top: 100px;
+      left: 100px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="box">
+
+  </div>
+</body>
+
+</html>
+<script>
+  document.getElementById("box").addEventListener("click", moveBox)
+  var position = 100
+  var speed = 3
+  var speed2 = 7
+  var more = 3
+  function moveBox() {
+    // increase box  position
+    position = position + speed
+    document.getElementById("box").style.left = position + "px"
+    //make it change direction if postion is greater than 300
+    if (position > 500) {
+      speed = -6
+    }
+    if (position < 100) {
+      speed = 6
+    }
+    // increase box position
+    
+    document.getElementById("box").style.top = position + "px"
+    position = position + speed2
+    //make it change direction if postion is greater than 300
+    if (position > 500) {
+      speed2 = -5
+    }
+    if (position < 100) {
+      speed2 = 5
+    }
+  }
+  
+  setInterval(moveBox, 16)
+</script>
