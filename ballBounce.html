@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouncing Ball with Gravity</title>
+</head>
+
+<body>
+    <canvas id="canvas"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+
+        canvas.width = 400;
+        canvas.height = 300;
+
+        var ballX = [];
+        var ballY = [];
+        var ballSpeedX = [];
+        var ballSpeedY = [];
+        var ballRadius = [];
+
+        var gravity = 0.2;
+        var bounceFactor = 0.7;
+        var friction = 0.99
+        for (i = 0; i < 100; i = i + 1) {
+            ballX[i] = Math.random() * 200
+            ballY[i] = Math.random() * -500
+            ballSpeedX[i] = Math.random() * 20 - 10
+            ballSpeedY[i] = Math.random() * 20 - 10
+            ballRadius[i] = Math.random() * 20 
+
+        }
+
+        setInterval(loop, 10)
+
+        function loop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            for (var i = 0; i < 20; i = i + 1) {
+                ballSpeedY[i] = ballSpeedY[i] + gravity;
+                ballX[i] = ballX[i] + ballSpeedX[i];
+                ballY[i] = ballY[i] + ballSpeedY[i];
+
+                if (ballX[i] - ballRadius[i] < 0) {
+                    ballSpeedX[i] = -ballSpeedX[i] * friction;
+                }
+
+                if (ballX[i] + ballRadius[i] > canvas.width) {
+                    ballSpeedX[i] = -ballSpeedX[i] * friction;
+                }
+
+                if (ballY[i] + ballRadius[i] > canvas.height) {
+                    ballY[i] = canvas.height - ballRadius[i];
+                    ballSpeedY[i] = -ballSpeedY[i] * bounceFactor;
+                    ballSpeedX[i] = ballSpeedX[i] * friction;
+                }
+
+                ctx.fillStyle = "blue";
+                ctx.beginPath();
+                ctx.arc(ballX[i], ballY[i], ballRadius[i], 0, Math.PI * 2);
+                ctx.fill();
+            }
+        }
+
+    </script>
+</body>
+
+</html>

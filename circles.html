@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title>JS Bin</title>
+</head>
+
+<body>
+    <canvas id="canvas" height="900" width="2000"></canvas>
+</body>
+
+</html>
+<script>
+    var c = document.getElementById("canvas");
+    var ctx = c.getContext("2d");
+    var x = []
+    var directionx = []
+    var y = []
+    var directiony = []
+    for (i = 0; i < 100; i = i + 1) {
+        x[i] = Math.random() * 20
+        directionx[i] = Math.random() * 20 - 10
+        y[i] = Math.random() * 20 - 10
+        directiony[i] = Math.random() * 20 - 10
+    }
+    setInterval(main, 50)
+    function main() {
+        ctx.clearRect(0, 0, 2000, 2000)
+        for (var i = 0; i < 20; i = i + 1) {
+            ctx.fillRect(x[i], y[i], 10, 10)
+            x[i] = x[i] + directionx[i]
+            y[i] = y[i] + directiony[i]
+            if (x[i] > 800) {
+                directionx[i] = directionx[i] * -1
+            }
+            if (x[i] < 0) {
+                directionx[i] = directionx[i] * -1
+            }
+            if (y[i] > 800) {
+                directiony[i] = directiony[i] * -1
+            }
+            if (y[i] < 0) {
+                directiony[i] = directiony[i] * -1
+            }
+        }
+    }
+</script>
