@@ -6,23 +6,17 @@ function runProgram() {
   ////////////////////////////////////////////////////////////////////////////////
   //////////////////////////// SETUP /////////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
+  const walker = {
+    x: 0,
+    y: 0,
+    speedX: 0,
+    speedY: 0,
+  }
 
   // Constant Variables
   var FRAME_RATE = 60;
   var FRAMES_PER_SECOND_INTERVAL = 1000 / FRAME_RATE;
-  const KEY = {
-    ENTER: 13,
-    LEFT: 37,
-    UP: 38,
-    RIGHT: 39,
-    DOWN: 40,
-  };
-  var walker = {
-    x: 0,
-    y: 0,
-    speedX: 8,
-    speedY: 9,
-  }
+
   // Game Item Objects
 
 
@@ -35,19 +29,28 @@ function runProgram() {
 
   Note: You can have multiple event listeners for different types of events.
   */
-  $(document).on('keydown', handleKeyDown);
+  $(document).on("keydown", handleKeyDown);
+  $(document).on("keyup", handleKeyUp);
 
   ////////////////////////////////////////////////////////////////////////////////
   ///////////////////////// CORE LOGIC ///////////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
-
+  const KEY = {
+    ENTER: 13,
+    LEFT: 37,
+    UP: 38,
+    RIGHT: 39,
+    DOWN: 40,
+  };
   /* 
   On each "tick" of the timer, a new frame is dynamically drawn using JavaScript
   by calling this function and executing the code inside.
   */
   function newFrame() {
-    repositionGameItem()
-    redrawGameItem()
+    repositionGameItem();
+    wallCollision();
+    redrawGameItem();
+    console.log(walker.x, walker.y);
   }
 
   /* 
@@ -57,25 +60,50 @@ function runProgram() {
   Note: You can have multiple event handlers for different types of events.
   */
   function handleKeyDown(event) {
-    console.log(event.which);
+
     if (event.which === KEY.LEFT) {
+      walker.speedX = -5;
       console.log("left pressed");
-    }
-    if (event.which === KEY.UP) {
+    } if (event.which === KEY.UP) {
+      walker.speedY = -5;
       console.log("up pressed");
-    }
-    if (event.which === KEY.RIGHT) {
+    } if (event.which === KEY.RIGHT) {
+      walker.speedX = 5;
       console.log("right pressed");
-    }
-    if (event.which === KEY.DOWN) {
+    } if (event.which === KEY.DOWN) {
+      walker.speedY = 5;
       console.log("down pressed");
     }
+    console.log(event.which);
   }
+
+  function handleKeyUp(event) {
+    if (event.which === KEY.LEFT) {
+      walker.speedX = 0;
+      console.log("left up");
+    } if (event.which === KEY.UP) {
+      walker.speedY = 0;
+      console.log("up up");
+    } if (event.which === KEY.RIGHT) {
+      walker.speedX = 0;
+      console.log("right up");
+    } if (event.which === KEY.DOWN) {
+      walker.speedY = 0;
+      console.log("down up");
+    }
+    console.log(event.which);
+  }
+
 
   ////////////////////////////////////////////////////////////////////////////////
   ////////////////////////// HELPER FUNCTIONS ////////////////////////////////////
   ////////////////////////////////////////////////////////////////////////////////
 
+  function repositionGameItem() {
+    walker.x = walker.x + walker.speedX;
+    walker.y = walker.y + walker.speedY;
+
+  }
 
   function endGame() {
     // stop the interval timer
@@ -84,14 +112,25 @@ function runProgram() {
     // turn off event handlers
     $(document).off();
   }
-  function repositionGameItem() {
-    walker.x = walker.speedX
-    walker.y = walker.speedY
-    console.log(walker.x, walker.y);
-  }
   function redrawGameItem() {
     $("#walker").css("left", walker.x);
     $("#walker").css("top", walker.y);
-    console.log("Walker position:", walker.x, walker.y);
   }
+
+  function wallCollision() {
+    if (walker.x < 0) {
+      walker.x -= walker.speedX;
+      console.log("left no");
+    } if (walker.y < 0) {
+      walker.y -= walker.speedY;
+      console.log("up no");
+    } if (walker.x > $("#board").width() - 50) {
+      walker.x -= walker.speedX;
+      console.log("right no");
+    } if (walker.y > $("#board").height() - 50) {
+      walker.y -= walker.speedY;
+      console.log("down no");
+    }
+  }
+
 }
